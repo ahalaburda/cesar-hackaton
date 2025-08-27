@@ -12,6 +12,7 @@ interface StackProps extends cdk.StackProps {
   slackAppToken: string;
   domainName: string;
   certificateArn: string;
+  appName: string;
 }
 
 export class CdkStack extends cdk.Stack {
@@ -28,24 +29,23 @@ export class CdkStack extends cdk.Stack {
     const subdomainHostedZone: route53.IHostedZone = route53.HostedZone.fromLookup(this, "subDomainZoneLookup", { domainName: props.domainName });
     const envCert: acm.ICertificate = acm.Certificate.fromCertificateArn(this, 'Certificate', props.certificateArn);
 
-    const clusterName = 'cesar-bot';
-
     const cluster = new ecs.Cluster(this, 'Cluster', {
       vpc: vpc,
-      clusterName: clusterName
+      clusterName: props.appName
     });
 
     const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDefinition', {
-      family: 'cesar-task',
+      family: props.appName,
     });
 
     const container = taskDefinition.addContainer('CesarContainer', {
       image: ecs.ContainerImage.fromAsset('../app/'),
+      containerName: props.appName,
       memoryLimitMiB: 512,
       cpu: 256,
       essential: true,
       logging: ecs.LogDriver.awsLogs({
-        streamPrefix: 'cesar-bot',
+        streamPrefix: props.appName,
       }),
       environment: {
         SLACK_BOT_TOKEN: props?.slackBotToken || '',
@@ -61,7 +61,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     const service = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'Service', {
-      serviceName: clusterName,
+      serviceName: props.appName,
       cluster: cluster, // Required
       cpu: 256, // Default is 256
       desiredCount: 1, // Default is 1
@@ -69,12 +69,12 @@ export class CdkStack extends cdk.Stack {
       memoryLimitMiB: 512, // Default is 512
       publicLoadBalancer: true,// Default is false
       assignPublicIp: false,
-      redirectHTTP: false, // Disabled HTTP redirect to avoid HTTPS requirement
+      redirectHTTP: true, // Disabled HTTP redirect to avoid HTTPS requirement
       certificate: envCert,
       circuitBreaker: {rollback: true},
       minHealthyPercent: 100,
       propagateTags: ecs.PropagatedTagSource.TASK_DEFINITION,
-      domainName: 'cesar-bot',
+      domainName: props.appName,
       domainZone: subdomainHostedZone
     });
 

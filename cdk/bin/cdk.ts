@@ -3,13 +3,12 @@ import * as cdk from 'aws-cdk-lib';
 import { CdkStack } from '../lib/cdk-stack';
 import { getParameter, getSecret } from '../lib/utils';
 
-
-
 const main = async () => {
 
   const domainName = "dev.bosscat.tech";
+  const appName = "cesar-bot";
 
-  const secret = await getSecret('/cesar-secret');
+  const secret = await getSecret(`/${appName}`);
   const certificateArn = await getParameter(`/${domainName}/certificate_arn`);
     if (certificateArn === null) {
         throw new Error(`No certificate found`);
@@ -26,12 +25,13 @@ const main = async () => {
   const slackAppToken = secretValue.SLACK_APP_TOKEN;
 
   const app = new cdk.App();
-  new CdkStack(app, 'CesarStack', {
+  new CdkStack(app, 'CesarBotStack', {
     slackBotToken,
     slackSigningSecret,
     slackAppToken,
     certificateArn,
     domainName,
+    appName,
     env: {
       account: '692859917636',
       region: 'us-east-1',

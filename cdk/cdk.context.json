@@ -58,5 +58,8 @@
   "hosted-zone:account=692859917636:domainName=dev.bosscat.tech:region=us-east-1": {
     "Id": "/hostedzone/Z085356113B2X2KYJHOCT",
     "Name": "dev.bosscat.tech."
-  }
+  },
+  "acknowledged-issue-numbers": [
+    34892
+  ]
 }
