@@ -67,7 +67,7 @@ export class CdkStack extends cdk.Stack {
       desiredCount: 1, // Default is 1
       taskDefinition: taskDefinition,
       memoryLimitMiB: 512, // Default is 512
-      publicLoadBalancer: false,// Default is false
+      publicLoadBalancer: true,// Default is false
       assignPublicIp: false,
       redirectHTTP: false, // Disabled HTTP redirect to avoid HTTPS requirement
       certificate: envCert,
