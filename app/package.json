@@ -1,27 +1,33 @@
 {
-    "name": "cesar-slack-kudos",
-    "version": "1.0.0",
-    "description": "César - Slack Kudos app with bananas, leveling, and avatar customization",
-    "main": "index.js",
-      "scripts": {
+  "name": "cesar-slack-kudos",
+  "version": "1.0.0",
+  "description": "César - Slack Kudos app with bananas, leveling, and avatar customization",
+  "main": "index.js",
+  "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest"
   },
-    "dependencies": {
-      "@slack/bolt": "^3.14.0",
-      "sqlite3": "^5.1.6",
-      "node-cron": "^3.0.2",
-      "dotenv": "^16.3.1"
-    },
-    "devDependencies": {
-      "nodemon": "^3.0.1",
-      "jest": "^29.7.0"
-    },
-    "keywords": ["slack", "kudos", "recognition", "gamification", "bot"],
-    "author": "Your Name",
-    "license": "MIT",
-    "engines": {
-      "node": ">=16.0.0"
-    }
+  "dependencies": {
+    "@slack/bolt": "^3.14.0",
+    "sqlite3": "^5.1.6",
+    "node-cron": "^3.0.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "slack",
+    "kudos",
+    "recognition",
+    "gamification",
+    "bot"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
   }
+}

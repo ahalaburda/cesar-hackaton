@@ -1,16 +1,75 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
+interface StackProps extends cdk.StackProps {
+  slackBotToken: string;
+  slackSigningSecret: string;
+  slackAppToken: string;
+}
+
 export class CdkStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const vpc = ec2.Vpc.fromLookup(this, 'vpc', {
+      tags: {
+        'environment': "non-production",
+        'purpose': 'vpc'
+      }
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const clusterName = 'cesar-cluster';
+
+    const cluster = new ecs.Cluster(this, 'Cluster', {
+      vpc: vpc,
+      clusterName: clusterName
+    });
+
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDefinition', {
+      family: 'cesar-task',
+    });
+
+    const container = taskDefinition.addContainer('CesarContainer', {
+      image: ecs.ContainerImage.fromAsset('../app/'),
+      memoryLimitMiB: 512,
+      cpu: 256,
+      essential: true,
+      logging: ecs.LogDriver.awsLogs({
+        streamPrefix: 'cesar-bot',
+      }),
+      environment: {
+        SLACK_BOT_TOKEN: props?.slackBotToken || '',
+        SLACK_SIGNING_SECRET: props?.slackSigningSecret || '',
+        SLACK_APP_TOKEN: props?.slackAppToken || '',
+        DATABASE_PATH: '/data/cesar.db',
+      },
+      portMappings: [
+        {
+          containerPort: 3000,
+        }
+      ]
+    });
+
+    const service = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'Service', {
+      serviceName: clusterName,
+      cluster: cluster, // Required
+      cpu: 256, // Default is 256
+      desiredCount: 1, // Default is 1
+      taskDefinition: taskDefinition,
+      memoryLimitMiB: 512, // Default is 512
+      publicLoadBalancer: false,// Default is false
+      assignPublicIp: false,
+      // redirectHTTP: false, // Disabled HTTP redirect to avoid HTTPS requirement
+      //certificate: envCert,
+      circuitBreaker: {rollback: true},
+      minHealthyPercent: 100,
+      propagateTags: ecs.PropagatedTagSource.TASK_DEFINITION,
+      // domainName: props.serviceName + '-ecs',
+      // domainZone: props.subdomainHostedZone
+    });
   }
 }
