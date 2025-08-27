@@ -1,0 +1,43 @@
+name: 'Deploy to AWS'
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: cesar-bot-${{ github.ref_name }}
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+  REGION: us-east-1
+
+jobs:
+
+  aws_cdk:
+    runs-on: ubuntu-latest
+    name: Deploy to AWS
+    permissions: write-all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_DEVELOPMENT }}
+          role-session-name: cesar-bot
+          aws-region: ${{ env.REGION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      
+      - name: Install cdk cli
+        run: npm install -g aws-cdk
+      - name: Install CDK dependencies
+        shell: bash
+        working-directory: ./cdk
+        run: npm install
+      - name: cdk deploy
+        working-directory: ./cdk
+        run: cdk deploy --all --require-approval never

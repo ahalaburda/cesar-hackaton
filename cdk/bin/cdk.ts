@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { CdkStack } from '../lib/cdk-stack';
-import { getSecret } from '../lib/utils';
+import { getParameter, getSecret } from '../lib/utils';
 
 
 
 const main = async () => {
 
+  const domainName = "dev.bosscat.tech";
+
   const secret = await getSecret('/cesar-secret');
+  const certificateArn = await getParameter(`/${domainName}/certificate_arn`);
+    if (certificateArn === null) {
+        throw new Error(`No certificate found`);
+    }
 
   if (!secret) {
     throw new Error('No secret found');
@@ -24,6 +30,8 @@ const main = async () => {
     slackBotToken,
     slackSigningSecret,
     slackAppToken,
+    certificateArn,
+    domainName,
     env: {
       account: '692859917636',
       region: 'us-east-1',
