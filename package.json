@@ -2,12 +2,12 @@
     "name": "cesar-slack-kudos",
     "version": "1.0.0",
     "description": "César - Slack Kudos app with bananas, leveling, and avatar customization",
-    "main": "app.js",
-    "scripts": {
-      "start": "node app.js",
-      "dev": "nodemon app.js",
-      "test": "jest"
-    },
+    "main": "index.js",
+      "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
     "dependencies": {
       "@slack/bolt": "^3.14.0",
       "sqlite3": "^5.1.6",
