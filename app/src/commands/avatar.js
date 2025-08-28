@@ -13,7 +13,7 @@ class AvatarCommand {
       
       if (userData.level < 2) {
         await respond({
-          text: '🔒 Avatar Studio unlocks at **Level 2**! Keep earning bananas to customize your pet monkey! 🐒',
+          text: '🔒 Avatar Studio unlocks at *Level 2*! Keep earning bananas to customize your pet monkey! 🐒',
           response_type: 'ephemeral'
         });
         return;
@@ -24,10 +24,10 @@ class AvatarCommand {
       
       const config = JSON.parse(userData.avatar_config || '{"color": "yellow", "accessories": []}');
       
-      let avatarText = '🎨 **Avatar Studio** 🐒\n\n';
+      let avatarText = '🎨 *Avatar Studio* 🐒\n\n';
       avatarText += `Current avatar: ${LevelSystem.getAvatarForLevel(userData.level)}\n\n`;
-      avatarText += `**Available colors:** ${colors.join(', ')}\n`;
-      avatarText += `**Available accessories:** ${accessories.join(', ')}\n`;
+      avatarText += `*Available colors:* ${colors.join(', ')}\n`;
+      avatarText += `*Available accessories:* ${accessories.join(', ')}\n`;
       avatarText += `\nCurrent config: Color: ${config.color}, Accessories: ${config.accessories.join(', ') || 'none'}\n\n`;
       avatarText += `Use \`/avatar color yellow\` or \`/avatar accessory 🎩\` to customize!`;
 

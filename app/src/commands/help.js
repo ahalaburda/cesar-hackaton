@@ -4,13 +4,13 @@ class HelpCommand {
   async handle(command, ack, respond) {
     await ack();
 
-    const helpText = `🐒 **César - Slack Kudos Help** 🍌
+    const helpText = `🐒 *César - Slack Kudos Help* 🍌
 
 *How to give bananas:*
 In any public channel: \`:banana: <@monkey> for helping me with the deploy!\`
 
 *Commands:*
-• \`/cesartop\` - See top 10 users and your stats
+• \`/cesar-top\` - See top 10 users and your stats
 • \`/cesar-avatar\` - Customize your pet monkey (Level 2+)
 • \`/cesar-help\` - Show this help
 

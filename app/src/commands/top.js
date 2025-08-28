@@ -21,7 +21,7 @@ class TopCommand {
       // Get current user's rank
       const userRank = await this.db.getUserRank(userId);
 
-      let rankingText = '🏆 **Top 10 Banana Rankings** 🍌\n\n';
+      let rankingText = '🏆 *Top 10 Monkeys* 🍌\n\n';
       
       // Build ranking list
       for (let i = 0; i < topUsers.length; i++) {
@@ -32,7 +32,7 @@ class TopCommand {
         try {
           const userInfo = await this.client.users.info({ user: user.user_id });
           const name = userInfo.user.display_name || userInfo.user.real_name || userInfo.user.name;
-          rankingText += `${medal} ${avatar} **${name}** - Level ${user.level} (${user.bananas} 🍌)\n`;
+          rankingText += `${medal} ${avatar} *${name}* - Level ${user.level} (${user.bananas} 🍌)\n`;
         } catch {
           rankingText += `${medal} ${avatar} <@${user.user_id}> - Level ${user.level} (${user.bananas} 🍌)\n`;
         }
@@ -42,7 +42,7 @@ class TopCommand {
       const bananasToNext = LevelSystem.getBananasToNextLevel(userData.bananas);
       const userAvatar = LevelSystem.getAvatarForLevel(userData.level);
       
-      rankingText += `\n📍 **Your Stats:**\n${userAvatar} Rank: #${userRank} | Level: ${userData.level} | Bananas: ${userData.bananas} 🍌`;
+      rankingText += `\n📍 *Your Stats:*\n${userAvatar} Rank: #${userRank} | Level: ${userData.level} | Bananas: ${userData.bananas} 🍌`;
       
       if (bananasToNext > 0) {
         rankingText += `\n🎯 ${bananasToNext} bananas to next level!`;

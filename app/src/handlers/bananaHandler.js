@@ -68,7 +68,7 @@ class BananaHandler {
     
     await this.client.chat.postMessage({
       channel: channel,
-      text: `🎉 Congratulations <@${userId}>! You've leveled up to **Level ${newLevel}** ${avatar}!\n🍌 Total bananas: ${totalBananas}`
+      text: `🎉 Congratulations <@${userId}>! You've leveled up to *Level ${newLevel}* ${avatar}!\n🍌 Total bananas: ${totalBananas}`
     });
 
     // Send DM about Avatar Studio (Level 2+)
@@ -76,7 +76,7 @@ class BananaHandler {
       try {
         await this.client.chat.postMessage({
           channel: userId,
-          text: `🎨 You've unlocked the **Avatar Studio**! Use \`/avatar\` to customize your pet monkey with new colors and accessories!`
+          text: `🎨 You've unlocked the *Avatar Studio*! Use \`/avatar\` to customize your pet monkey with new colors and accessories!`
         });
       } catch (dmError) {
         console.log('Could not send DM:', dmError);
@@ -118,7 +118,7 @@ class BananaHandler {
         try {
           await this.client.chat.postMessage({
             channel: userId,
-            text: `🎁 **Banana Prize!** You've given ${count} bananas to teammates! Here's a bonus banana for being such a great helper! 🍌+1`
+            text: `🎁 *Banana Prize!* You've given ${count} bananas to teammates! Here's a bonus banana for being such a great helper! 🍌+1`
           });
         } catch (dmError) {
           console.log('Could not send giver prize DM:', dmError);
