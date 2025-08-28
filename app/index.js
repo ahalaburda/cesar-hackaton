@@ -43,15 +43,16 @@ const decayService = new DecayService(database, app);
 
 
 // Listen for banana mentions in messages (giving bananas)
-const regex = /(?=.*(?:🍌|:banana:))(?=.*<@[UW][A-Z0-9]+>)/;
-
-app.message(regex, async ({ message, context }) => {
+app.message(/((?:🍌|:banana:).*<@([UW][A-Z0-9]+)>|<@([UW][A-Z0-9]+)>.*(?:🍌|:banana:))/, async ({ message, context }) => {
   console.log('🍌 Banana message detected!');
   console.log('Message text:', message.text);
-  console.log('From user:', message.user);
-  console.log('Channel:', message.channel);
-  console.log('Regex matches:', context.matches);
-  await bananaHandler.processBananaMessage(message, context);
+  const userId = context.matches[2] || context.matches[3];
+  const modifiedContext = {
+    ...context,
+    matches: [context.matches[0], userId]
+  };
+  
+  await bananaHandler.processBananaMessage(message, modifiedContext);
 });
 
 // Top slash command
