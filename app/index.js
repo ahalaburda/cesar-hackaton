@@ -43,7 +43,9 @@ const decayService = new DecayService(database, app);
 
 
 // Listen for banana mentions in messages (giving bananas)
-app.message(/.*(?:🍌|:banana:).*<@([UW][A-Z0-9]+)>.*/, async ({ message, context }) => {
+const regex = /(?=.*(?:🍌|:banana:))(?=.*<@[UW][A-Z0-9]+>)/;
+
+app.message(regex, async ({ message, context }) => {
   console.log('🍌 Banana message detected!');
   console.log('Message text:', message.text);
   console.log('From user:', message.user);
