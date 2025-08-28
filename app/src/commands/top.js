@@ -1,6 +1,6 @@
 const LevelSystem = require('../utils/levelSystem');
 
-class RankingCommand {
+class TopCommand {
   constructor(database, client) {
     this.db = database;
     this.client = client;
@@ -60,4 +60,4 @@ class RankingCommand {
   }
 }
 
-module.exports = RankingCommand;
+module.exports = TopCommand;
