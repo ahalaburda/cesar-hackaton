@@ -10,7 +10,7 @@ class HelpCommand {
 In any public channel: \`:banana: @username for helping me with the deploy!\`
 
 **Commands:**
-• \`/top\` - See top 15 users and your stats
+• \`/top\` - See top 10 users and your stats
 • \`/avatar\` - Customize your pet monkey (Level 2+)
 • \`/cesar-help\` - Show this help
 
