@@ -4,10 +4,12 @@
 class LevelSystem {
   /**
    * Calculate total bananas needed to reach a specific level
-   * Uses triangular number formula: n(n+1)/2
+   * Level 1 = 0 bananas, Level 2 = 1 banana, Level 3 = 3 bananas, etc.
+   * Uses triangular number formula: (n-1)*n/2
    */
   static getBananasForLevel(level) {
-    return (level * (level + 1)) / 2;
+    if (level <= 1) return 0;
+    return ((level - 1) * level) / 2;
   }
 
   /**
@@ -15,10 +17,10 @@ class LevelSystem {
    */
   static getLevelFromBananas(bananas) {
     let level = 1;
-    while (this.getBananasForLevel(level) <= bananas) {
+    while (this.getBananasForLevel(level + 1) <= bananas) {
       level++;
     }
-    return level - 1;
+    return level;
   }
 
   /**

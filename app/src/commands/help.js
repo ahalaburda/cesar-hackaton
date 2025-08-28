@@ -6,21 +6,21 @@ class HelpCommand {
 
     const helpText = `🐒 **César - Slack Kudos Help** 🍌
 
-**How to give bananas:**
-In any public channel: \`:banana: @username for helping me with the deploy!\`
+*How to give bananas:*
+In any public channel: \`:banana: <@adrian> for helping me with the deploy!\`
 
-**Commands:**
+*Commands:*
 • \`/top\` - See top 10 users and your stats
 • \`/avatar\` - Customize your pet monkey (Level 2+)
 • \`/cesar-help\` - Show this help
 
-**Leveling System:**
+*Leveling System:*
 • Level 1: 1 banana 🍌
 • Level 2: 3 bananas 🍌🍌🍌 (unlocks Avatar Studio)
 • Level 3: 6 bananas (more accessories)
 • Level n: triangular progression (1+2+3+...+n)
 
-**Features:**
+*Features:*
 • 🎁 **Giver Prize**: Bonus banana every 3 you give!
 • 🔄 **Monthly Nudge**: -2 bananas if you don't give any in a month
 • 🎨 **Avatar Studio**: Customize your monkey at Level 2+

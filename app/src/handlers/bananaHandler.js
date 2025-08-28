@@ -100,13 +100,20 @@ class BananaHandler {
     try {
       const count = await this.db.getTransactionCount(userId);
       
-      if (count % 3 === 0) {
+      if (count % 3 === 0 && count > 0) {
         // Award giver prize
         const giverData = await this.db.getUserData(userId);
         const newBananas = giverData.bananas + 1;
         const newLevel = LevelSystem.getLevelFromBananas(newBananas);
         
         await this.db.updateUserBananas(userId, newBananas, newLevel);
+        
+        // Check if giver leveled up too
+        const levelCheck = LevelSystem.checkLevelUp(giverData.bananas, newBananas);
+        if (levelCheck.leveledUp) {
+          // Send level up notification to channel (not DM) so everyone can see
+          await this.handleLevelUp(userId, levelCheck.newLevel, newBananas, userId);
+        }
         
         try {
           await this.client.chat.postMessage({
