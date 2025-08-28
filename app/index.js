@@ -46,7 +46,7 @@ app.message(/.*:banana:.*<@([UW][A-Z0-9]+)>.*/, async ({ message, context }) => 
 });
 
 // Ranking slash command
-app.command('/ranking', async ({ command, ack, respond }) => {
+app.command('/top', async ({ command, ack, respond }) => {
   await rankingCommand.handle(command, ack, respond);
 });
 
