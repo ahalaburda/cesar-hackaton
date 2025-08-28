@@ -7,11 +7,11 @@ class HelpCommand {
     const helpText = `🐒 **César - Slack Kudos Help** 🍌
 
 *How to give bananas:*
-In any public channel: \`:banana: <@adrian> for helping me with the deploy!\`
+In any public channel: \`:banana: <@monkey> for helping me with the deploy!\`
 
 *Commands:*
-• \`/top\` - See top 10 users and your stats
-• \`/avatar\` - Customize your pet monkey (Level 2+)
+• \`/cesartop\` - See top 10 users and your stats
+• \`/cesar-avatar\` - Customize your pet monkey (Level 2+)
 • \`/cesar-help\` - Show this help
 
 *Leveling System:*
@@ -21,9 +21,9 @@ In any public channel: \`:banana: <@adrian> for helping me with the deploy!\`
 • Level n: triangular progression (1+2+3+...+n)
 
 *Features:*
-• 🎁 **Giver Prize**: Bonus banana every 3 you give!
-• 🔄 **Monthly Nudge**: -2 bananas if you don't give any in a month
-• 🎨 **Avatar Studio**: Customize your monkey at Level 2+
+• 🎁 *Giver Prize*: Bonus banana every 3 you give!
+• 🔄 *Monthly Nudge*: -2 bananas if you don't give any in a month
+• 🎨 *Avatar Studio*: Customize your monkey at Level 2+
 
 Spread the recognition and help build our team culture! 🚀`;
 
