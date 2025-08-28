@@ -7,11 +7,17 @@ class BananaHandler {
   }
 
   async processBananaMessage(message, context) {
+    console.log('🍌 processBananaMessage called');
+    console.log('Message:', message);
+    console.log('Context matches:', context.matches);
+    
     try {
       const fromUserId = message.user;
       const toUserId = context.matches[1];
       const channel = message.channel;
       const reason = message.text;
+
+      console.log(`🍌 Processing banana: ${fromUserId} → ${toUserId} in ${channel}`);
 
       // Don't allow self-recognition
       if (fromUserId === toUserId) {
@@ -59,7 +65,8 @@ class BananaHandler {
       await this.db.updateLastBananaGiven(fromUserId);
 
     } catch (error) {
-      console.error('Error processing banana:', error);
+      console.error('🚫 Error processing banana:', error);
+      console.error('Stack trace:', error.stack);
     }
   }
 

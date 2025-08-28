@@ -9,7 +9,7 @@ const AvatarCommand = require('./src/commands/avatar');
 const HelpCommand = require('./src/commands/help');
 const DecayService = require('./src/services/decayService');
 
-// Initialize Slack app for HTTP mode
+// Initialize Slack app for Socket Mode
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -43,7 +43,12 @@ const decayService = new DecayService(database, app);
 
 
 // Listen for banana mentions in messages (giving bananas)
-app.message(/.*:banana:.*<@([UW][A-Z0-9]+)>.*/, async ({ message, context }) => {
+app.message(/.*(?:🍌|:banana:).*<@([UW][A-Z0-9]+)>.*/, async ({ message, context }) => {
+  console.log('🍌 Banana message detected!');
+  console.log('Message text:', message.text);
+  console.log('From user:', message.user);
+  console.log('Channel:', message.channel);
+  console.log('Regex matches:', context.matches);
   await bananaHandler.processBananaMessage(message, context);
 });
 
@@ -67,11 +72,22 @@ app.error((error) => {
   console.error('Slack app error:', error);
 });
 
+// Add general message listener for debugging
+app.message(async ({ message }) => {
+  console.log('📨 Any message received:', {
+    text: message.text,
+    user: message.user,
+    channel: message.channel,
+    type: message.type
+  });
+});
+
 // Start the app
 (async () => {
   try {
     await app.start();
     console.log('⚡️ César Slack app is running in Socket Mode!');
+    console.log('🔍 Debug logging enabled for messages');
   } catch (error) {
     console.error('Failed to start app:', error);
     process.exit(1);
