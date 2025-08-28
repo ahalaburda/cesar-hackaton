@@ -129,10 +129,17 @@ class Database {
     });
   }
 
-  getTopUsers(limit = 15) {
+  getTopUsers(limit = 10) {
     return new Promise((resolve, reject) => {
-      this.db.all(
-        'SELECT user_id, bananas, level FROM users ORDER BY bananas DESC LIMIT ?',
+      this.db.all(`
+        SELECT u.user_id, 
+               COALESCE(SUM(ms.bananas_received), 0) as bananas, 
+               u.level 
+        FROM users u
+        LEFT JOIN monthly_stats ms ON u.user_id = ms.user_id
+        GROUP BY u.user_id
+        ORDER BY bananas DESC 
+        LIMIT ?`,
         [limit],
         (err, rows) => {
           if (err) {
@@ -145,11 +152,23 @@ class Database {
     });
   }
 
-  getUserRank(bananas) {
+  getUserRank(userId) {
     return new Promise((resolve, reject) => {
-      this.db.get(
-        'SELECT COUNT(*) + 1 as rank FROM users WHERE bananas > ?',
-        [bananas],
+      this.db.get(`
+        SELECT COUNT(*) + 1 as rank 
+        FROM (
+          SELECT u.user_id, COALESCE(SUM(ms.bananas_received), 0) as received_bananas
+          FROM users u
+          LEFT JOIN monthly_stats ms ON u.user_id = ms.user_id
+          GROUP BY u.user_id
+        ) ranked_users
+        WHERE ranked_users.received_bananas > (
+          SELECT COALESCE(SUM(ms2.bananas_received), 0)
+          FROM users u2
+          LEFT JOIN monthly_stats ms2 ON u2.user_id = ms2.user_id
+          WHERE u2.user_id = ?
+        )`,
+        [userId],
         (err, row) => {
           if (err) {
             reject(err);
@@ -206,6 +225,22 @@ class Database {
             return;
           }
           resolve();
+        }
+      );
+    });
+  }
+
+  getUserReceivedBananas(userId) {
+    return new Promise((resolve, reject) => {
+      this.db.get(
+        'SELECT COALESCE(SUM(bananas_received), 0) as received_bananas FROM monthly_stats WHERE user_id = ?',
+        [userId],
+        (err, row) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(row.received_bananas);
         }
       );
     });

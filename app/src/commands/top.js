@@ -12,16 +12,17 @@ class TopCommand {
     try {
       const userId = command.user_id;
       
-      // Get top 15 users and current user data in parallel
-      const [topUsers, userData] = await Promise.all([
-        this.db.getTopUsers(15),
-        this.db.getUserData(userId)
+      // Get top 10 users, current user data, and received bananas in parallel
+      const [topUsers, userData, userReceivedBananas] = await Promise.all([
+        this.db.getTopUsers(10),
+        this.db.getUserData(userId),
+        this.db.getUserReceivedBananas(userId)
       ]);
 
       // Get current user's rank
-      const userRank = await this.db.getUserRank(userData.bananas);
+      const userRank = await this.db.getUserRank(userId);
 
-      let rankingText = '🏆 **Top 15 Banana Rankings** 🍌\n\n';
+      let rankingText = '🏆 **Top 10 Banana Rankings** 🍌\n\n';
       
       // Build ranking list
       for (let i = 0; i < topUsers.length; i++) {
@@ -39,10 +40,10 @@ class TopCommand {
       }
 
       // Add user stats
-      const bananasToNext = LevelSystem.getBananasToNextLevel(userData.bananas);
+      const bananasToNext = LevelSystem.getBananasToNextLevel(userReceivedBananas);
       const userAvatar = LevelSystem.getAvatarForLevel(userData.level);
       
-      rankingText += `\n📍 **Your Stats:**\n${userAvatar} Rank: #${userRank} | Level: ${userData.level} | Bananas: ${userData.bananas} 🍌`;
+      rankingText += `\n📍 **Your Stats:**\n${userAvatar} Rank: #${userRank} | Level: ${userData.level} | Bananas: ${userReceivedBananas} 🍌`;
       
       if (bananasToNext > 0) {
         rankingText += `\n🎯 ${bananasToNext} bananas to next level!`;
