@@ -11,7 +11,8 @@ In any public channel: \`:banana: <@monkey> for helping me with the deploy!\`
 
 *Commands:*
 • \`/cesar-top\` - See top 10 users and your stats
-• \`/cesar-avatar\` - Customize your pet monkey (Level 2+)
+• \`/cesar-avatar\` - Avatar Studio info (Level 2+)
+• \`/cesar-generate-avatar\` - Generate new avatar with AI (Level 2+)
 • \`/cesar-help\` - Show this help
 
 *Leveling System:*
@@ -19,6 +20,17 @@ In any public channel: \`:banana: <@monkey> for helping me with the deploy!\`
 • Level 2: 3 bananas 🍌🍌🍌 (unlocks Avatar Studio)
 • Level 3: 6 bananas (more accessories)
 • Level n: triangular progression (1+2+3+...+n)
+
+*Avatar Studio Features:*
+• 🎨 *AI Generation*: Create custom avatars using Google Gemini 2.5 Flash Image
+• 🎯 *Accessories*: Add items like hat, sneakers, glasses
+• 💰 *Cost System*: Spend bananas to generate avatars
+• 📈 *Level Progression*: Unlock more accessories as you level up
+
+*Avatar Costs:*
+• Base generation: 1 🍌
+• Each accessory: +0.5 🍌
+• Custom prompt: 3 🍌
 
 *Features:*
 • 🎁 *Giver Prize*: Bonus banana every 3 you give!

@@ -15,6 +15,8 @@ class Database {
         level INTEGER DEFAULT 1,
         last_banana_given DATE,
         avatar_config TEXT DEFAULT '{"color": "yellow", "accessories": []}',
+        avatar_image_url TEXT,
+        avatar_prompt TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`);
 
@@ -209,6 +211,39 @@ class Database {
       this.db.run(
         'UPDATE users SET last_banana_given = CURRENT_DATE WHERE user_id = ?',
         [userId],
+        function(err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  updateAvatar(userId, imageUrl, prompt, accessories = []) {
+    return new Promise((resolve, reject) => {
+      const avatarConfig = JSON.stringify({ accessories });
+      this.db.run(
+        'UPDATE users SET avatar_image_url = ?, avatar_prompt = ?, avatar_config = ? WHERE user_id = ?',
+        [imageUrl, prompt, avatarConfig, userId],
+        function(err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  deductBananas(userId, amount) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        'UPDATE users SET bananas = MAX(0, bananas - ?) WHERE user_id = ?',
+        [amount, userId],
         function(err) {
           if (err) {
             reject(err);

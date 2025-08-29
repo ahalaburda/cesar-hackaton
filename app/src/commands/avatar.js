@@ -19,17 +19,37 @@ class AvatarCommand {
         return;
       }
 
-      const colors = ['yellow', 'brown', 'black', 'gray'];
-      const accessories = userData.level >= 3 ? ['🎩', '👑', '🕶️', '🎀'] : ['🎩'];
-      
-      const config = JSON.parse(userData.avatar_config || '{"color": "yellow", "accessories": []}');
-      
       let avatarText = '🎨 *Avatar Studio* 🐒\n\n';
-      avatarText += `Current avatar: ${LevelSystem.getAvatarForLevel(userData.level)}\n\n`;
-      avatarText += `*Available colors:* ${colors.join(', ')}\n`;
-      avatarText += `*Available accessories:* ${accessories.join(', ')}\n`;
-      avatarText += `\nCurrent config: Color: ${config.color}, Accessories: ${config.accessories.join(', ') || 'none'}\n\n`;
-      avatarText += `Use \`/avatar color yellow\` or \`/avatar accessory 🎩\` to customize!`;
+      
+      // Show current avatar info
+      if (userData.avatar_image_url) {
+        avatarText += `*Current Avatar:* Generated AI Avatar\n`;
+        if (userData.avatar_prompt) {
+          avatarText += `*Prompt:* "${userData.avatar_prompt}"\n`;
+        }
+        avatarText += `*File:* ${userData.avatar_image_url}\n\n`;
+      } else {
+        avatarText += `*Current avatar:* ${LevelSystem.getAvatarForLevel(userData.level)}\n\n`;
+      }
+
+      avatarText += `*Your Level:* ${userData.level}\n`;
+      avatarText += `*Your Bananas:* ${userData.bananas} 🍌\n\n`;
+      
+      avatarText += '*🎨 Generate New Avatar:*\n';
+      avatarText += '• `/cesar-generate-avatar accessories hat sneakers` - Add accessories\n';
+      avatarText += '• `/cesar-generate-avatar custom "your prompt"` - Custom prompt (3 🍌)\n';
+      avatarText += '• `/cesar-generate-avatar preview` - Show available options\n\n';
+      
+      avatarText += '*💰 Costs:*\n';
+      avatarText += '• Base generation: 1 🍌\n';
+      avatarText += '• Each accessory: +0.5 🍌\n';
+      avatarText += '• Custom prompt: 3 🍌\n\n';
+      
+      avatarText += '*📋 Available Accessories by Level:*\n';
+      avatarText += '• Level 2+: collar, bracelet, hat\n';
+      avatarText += '• Level 3+: + sneakers, glasses\n';
+      avatarText += '• Level 4+: + backpack, watch\n';
+      avatarText += '• Level 5+: + necklace, earrings';
 
       await respond({
         text: avatarText,

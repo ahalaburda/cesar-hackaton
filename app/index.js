@@ -6,6 +6,7 @@ const Database = require('./src/database/db');
 const BananaHandler = require('./src/handlers/bananaHandler');
 const TopCommand = require('./src/commands/top');
 const AvatarCommand = require('./src/commands/avatar');
+const GenerateAvatarCommand = require('./src/commands/generateAvatar');
 const HelpCommand = require('./src/commands/help');
 const DecayService = require('./src/services/decayService');
 
@@ -36,6 +37,7 @@ const database = new Database();
 const bananaHandler = new BananaHandler(database, app.client);
 const topCommand = new TopCommand(database, app.client);
 const avatarCommand = new AvatarCommand(database);
+const generateAvatarCommand = new GenerateAvatarCommand(database);
 const helpCommand = new HelpCommand();
 
 // Initialize services
@@ -63,6 +65,11 @@ app.command('/cesar-top', async ({ command, ack, respond }) => {
 // Avatar customization command
 app.command('/cesar-avatar', async ({ command, ack, respond }) => {
   await avatarCommand.handle(command, ack, respond);
+});
+
+// Avatar generation command
+app.command('/cesar-generate-avatar', async ({ command, ack, respond }) => {
+  await generateAvatarCommand.handle(command, ack, respond);
 });
 
 // Help command

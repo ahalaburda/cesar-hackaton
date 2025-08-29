@@ -6,7 +6,9 @@ A gamified Slack bot for team recognition and kudos using bananas, leveling syst
 
 - 🍌 **Banana Recognition System**: Give kudos to teammates using banana emojis
 - 📈 **Leveling System**: Users level up based on triangular progression (1, 3, 6, 10, 15...)
-- 🎨 **Avatar Studio**: Customize your pet monkey at Level 2+ with colors and accessories
+- 🎨 **Avatar Studio**: Generate custom AI avatars using Google Gemini at Level 2+
+- 🤖 **AI Image Generation**: Create unique monkey avatars with accessories using Gemini 2.5 Flash Image
+- 💰 **Avatar Economy**: Spend bananas to generate and customize avatars
 - 🏆 **Leaderboards**: See top performers and your ranking
 - 🎁 **Giver Rewards**: Bonus bananas for being generous with recognition
 - 🔄 **Monthly Decay**: Gentle nudge system to keep engagement active
@@ -47,24 +49,34 @@ In any public channel:
 ```
 
 ### Commands
-- `/ranking` - View leaderboard and your stats
-- `/avatar` - Customize your pet monkey (Level 2+)
+- `/cesar-top` - View leaderboard and your stats
+- `/cesar-avatar` - Avatar Studio info and options (Level 2+)
+- `/cesar-generate-avatar` - Generate new AI avatar (Level 2+)
 - `/cesar-help` - Show help information
+
+### Avatar Studio Usage
+- `/cesar-generate-avatar accessories hat sneakers` - Generate with accessories
+- `/cesar-generate-avatar custom "A monkey wearing a superhero cape"` - Custom prompt
+- `/cesar-generate-avatar preview` - Show available options and costs
 
 ## Project Structure
 
 ```
 ├── src/
+│   ├── assets/
+│   │   └── base_monkey.png    # Base monkey image for AI generation
 │   ├── database/
 │   │   └── db.js              # Database operations
 │   ├── handlers/
 │   │   └── bananaHandler.js   # Banana message processing
 │   ├── commands/
-│   │   ├── ranking.js         # Ranking command
-│   │   ├── avatar.js          # Avatar customization
+│   │   ├── top.js             # Top users command
+│   │   ├── avatar.js          # Avatar Studio info
+│   │   ├── generateAvatar.js  # AI avatar generation
 │   │   └── help.js            # Help command
 │   ├── services/
-│   │   └── decayService.js    # Monthly decay scheduler
+│   │   ├── decayService.js    # Monthly decay scheduler
+│   │   └── imageGenerationService.js # AI image generation
 │   └── utils/
 │       └── levelSystem.js     # Level calculation utilities
 ├── index.js                   # Main application entry point
@@ -77,6 +89,7 @@ In any public channel:
 - `SLACK_BOT_TOKEN` - Bot User OAuth Token (xoxb-...)
 - `SLACK_SIGNING_SECRET` - App signing secret
 - `SLACK_APP_TOKEN` - App-Level Token for Socket Mode (xapp-...)
+- `GEMINI_API_KEY` - Google Gemini API key for image generation
 - `PORT` - Server port (default: 3000)
 
 ## Level System
@@ -84,8 +97,18 @@ In any public channel:
 The bot uses a triangular progression system:
 - Level 1: 1 banana 🍌
 - Level 2: 3 bananas 🍌🍌🍌 (unlocks Avatar Studio)
-- Level 3: 6 bananas
+- Level 3: 6 bananas (unlocks sneakers, glasses)
+- Level 4: 10 bananas (unlocks backpack, watch)
+- Level 5: 15 bananas (unlocks necklace, earrings)
 - Level n: n×(n+1)/2 bananas
+
+## Avatar Studio Economy
+
+- **Base Generation**: 1 🍌
+- **Accessories**: +0.5 🍌 each (collar, bracelet, hat, sneakers, glasses, etc.)
+- **Custom Prompts**: 3 🍌 (unlimited creativity)
+- **Level Progression**: Unlock more accessories as you level up
+- **AI Technology**: Powered by Google Gemini 2.5 Flash Image using the official @google/genai library
 
 ## Contributing
 

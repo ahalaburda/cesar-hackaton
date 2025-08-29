@@ -1,0 +1,3 @@
+# Ignore generated avatar images
+generated_*.png
+custom_*.png
