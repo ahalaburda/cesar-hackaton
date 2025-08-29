@@ -133,7 +133,8 @@ class BananaHandler {
         'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26DMYM4S4RytWCoQU/200w.gif',
         'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qQP3sciaFQWAM/200w.gif',
         'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ylyUQlf4VUVF9odXKU/100.gif',
-        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZxdmw2M3g4azNlcG00NmZ4cXBmNHczeXR6eTczM2M0eWpzd3luZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1wqYonEBtues7jlngs/giphy.gif'
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZxdmw2M3g4azNlcG00NmZ4cXBmNHczeXR6eTczM2M0eWpzd3luZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1wqYonEBtues7jlngs/giphy.gif',
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGp1aXZmajV5c2R0dmZidXVoamJ6cHdmeWFoajltc2MwNzByZWRwbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zVPfGm0EbLJNS/giphy.gif',
       ];
       
       
