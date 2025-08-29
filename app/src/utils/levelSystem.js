@@ -13,11 +13,11 @@ class LevelSystem {
   }
 
   /**
-   * Calculate current level based on total bananas
+   * Calculate current level based on total bananas (max level 10)
    */
   static getLevelFromBananas(bananas) {
     let level = 1;
-    while (this.getBananasForLevel(level + 1) <= bananas) {
+    while (this.getBananasForLevel(level + 1) <= bananas && level < 10) {
       level++;
     }
     return level;
@@ -28,8 +28,28 @@ class LevelSystem {
    */
   static getBananasToNextLevel(currentBananas) {
     const currentLevel = this.getLevelFromBananas(currentBananas);
+    if (currentLevel >= 10) return 0; // Max level reached
     const nextLevelBananas = this.getBananasForLevel(currentLevel + 1);
     return nextLevelBananas - currentBananas;
+  }
+
+  /**
+   * Get monkey type name based on level
+   */
+  static getMonkeyType(level) {
+    const types = [
+      'Lemur',           // Level 1
+      'Monkey',          // Level 2  
+      'Chimp',           // Level 3
+      'Gorilla',         // Level 4
+      'Orangutan',       // Level 5
+      'Bonobo',          // Level 6
+      'Early Hominid',   // Level 7
+      'Homo Erectus',    // Level 8
+      'Neanderthal',     // Level 9
+      'César'            // Level 10
+    ];
+    return types[Math.min(level - 1, types.length - 1)];
   }
 
   /**
@@ -37,7 +57,7 @@ class LevelSystem {
    */
   static getAvatarForLevel(level) {
     const avatars = [
-      '🐒', '🙈', '🙉', '🙊', '🦍', '🦧', '🐵'
+      '🐒', '🙈', '🙉', '🙊', '🦍', '🦧', '🐵', '👨‍💼', '🧠', '👑'
     ];
     return avatars[Math.min(level - 1, avatars.length - 1)];
   }

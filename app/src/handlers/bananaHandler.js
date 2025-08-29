@@ -72,10 +72,28 @@ class BananaHandler {
 
   async handleLevelUp(userId, newLevel, totalBananas, channel) {
     const avatar = LevelSystem.getAvatarForLevel(newLevel);
+    const monkeyType = LevelSystem.getMonkeyType(newLevel);
+    
+    // Get a random monkey GIF from Giphy
+    const monkeyGif = await this.getRandomMonkeyGif();
     
     await this.client.chat.postMessage({
       channel: channel,
-      text: `🎉 Congratulations <@${userId}>! You've leveled up to *Level ${newLevel}* ${avatar}!\n🍌 Total bananas: ${totalBananas}`
+      text: `🎉 Congratulations <@${userId}>! You've evolved to *Level ${newLevel} - ${monkeyType}* ${avatar}!\n🍌 Total bananas: ${totalBananas}`,
+      blocks: monkeyGif ? [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `🎉 Congratulations <@${userId}>! You've evolved to *Level ${newLevel} - ${monkeyType}* ${avatar}!\n🍌 Total bananas: ${totalBananas}`
+          }
+        },
+        {
+          type: "image",
+          image_url: monkeyGif,
+          alt_text: `${monkeyType} celebration`
+        }
+      ] : undefined
     });
 
     // Send DM about Avatar Studio (Level 2+)
@@ -83,11 +101,46 @@ class BananaHandler {
       try {
         await this.client.chat.postMessage({
           channel: userId,
-          text: `🎨 You've unlocked the *Avatar Studio*! Use \`/avatar\` to customize your pet monkey with new colors and accessories!`
+          text: `🎨 You've unlocked the *Avatar Studio*! Use \`/cesar-avatar\` to customize your pet monkey with new colors and accessories!`
         });
       } catch (dmError) {
         console.log('Could not send DM:', dmError);
       }
+    }
+  }
+
+  async getRandomMonkeyGif() {
+    try {
+      // Use a predefined list of monkey-related GIFs for reliability
+      const monkeyGifs = [
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5Zesu5VPNGJlm/100.gif', 
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/H5C8CevNMbpBqNqFjl/200w.gif',
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Rlwz4m0aHgXH13jyrE/200w.gif',
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l4FGmO3MZkGng9Bp6/200w.gif',
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o85xAYQLOhSrmINHO/200w.gif',
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/42YlR8u9gV5Cw/200w.gif',
+        'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1BCIlYHwJ3hu0/100.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/H4zeDO4ocDYqY/200w.gif',
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/BBkKEBJkmFbTG/100.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JcEbzHIM7lJBe/200w.gif',
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3oEdvbpl0X32bXD2Vi/200w.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1wqYonEBtues7jlngs/200w.gif',
+        'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/73vsXqHC22yuA/200w.gif',
+        'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KzGCAlMiK6hQQ/200w.gif',
+        'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/dchERAZ73GvOE/100.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qixJFUXq1UNLa/200w.gif',
+        'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5oYgxQKHhEjEk/200w.gif',
+        'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26DMYM4S4RytWCoQU/200w.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qQP3sciaFQWAM/200w.gif',
+        'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmJqcGMzbjh0aWwyOTBucWIzamNuM2c1bXBxdG9heDN2dHcyZDRyMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ylyUQlf4VUVF9odXKU/100.gif',
+        'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZxdmw2M3g4azNlcG00NmZ4cXBmNHczeXR6eTczM2M0eWpzd3luZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1wqYonEBtues7jlngs/giphy.gif'
+      ];
+      
+      
+      return monkeyGifs[Math.floor(Math.random() * monkeyGifs.length)];
+    } catch (error) {
+      console.error('Error getting monkey GIF:', error);
+      return null;
     }
   }
 
